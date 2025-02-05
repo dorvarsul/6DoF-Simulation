@@ -6,7 +6,7 @@ CXXFLAGS = -Wall -std=c++17
 INCLUDES = -I/usr/include/eigen3
 
 # Source files
-SRC = main.cpp missile.cpp
+SRC = simulation.cpp missile.cpp
 OBJ = $(SRC:.cpp=.o)
 EXE = missile_sim
 
@@ -20,4 +20,4 @@ $(EXE): $(OBJ)
 
 # Clean build files
 clean:
-	rm -f $(OBJ) $(EXE)
+	rm -f $(OBJ) $(EXE) trajectory.csv

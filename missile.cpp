@@ -25,6 +25,18 @@ void Missile::consumeFuel(double dt) {
     if (fuelRemaining <= 0) thrust = 0;
 }
 
+double Missile::getX() {
+    return position.x();
+}
+
+double Missile::getY() {
+    return position.y();
+}
+
+double Missile::getZ() {
+    return position.z();
+}
+
 void Missile::update(double dt) {
     // Consume fuel
     consumeFuel(dt);
@@ -34,7 +46,7 @@ void Missile::update(double dt) {
 
     // Apply thrust if there's fuel remaining
     if (thrust > 0) {
-        Eigen::Vector3d thrustForce = orientation * Eigen::Vector3d(0,0, thrust);
+        Eigen::Vector3d thrustForce = thrust * velocity.normalized();
         totalForce += thrustForce;
     }
 
@@ -58,4 +70,13 @@ void Missile::update(double dt) {
     Eigen::Quaterniond deltaOrientation(1, angularVelocity.x() * dt / 2, angularVelocity.y() * dt / 2, angularVelocity.z() * dt / 2);
     orientation = orientation * deltaOrientation;
     orientation.normalize();
+
+}
+
+// Returns true if missile is in air
+bool Missile::inAir() {
+    if (position.z() < 0) {
+        return false;
+    }
+    return true;
 }

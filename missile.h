@@ -27,8 +27,13 @@ public:
 
     // Methods
     double getMass();
+    double getX();
+    double getY();
+    double getZ();
+    
     void consumeFuel(double dt); // Consume fuel based on thrust
     void update(double dt); // Update pos, velocity and rotation
+    bool inAir();
 };
 
 #endif  
