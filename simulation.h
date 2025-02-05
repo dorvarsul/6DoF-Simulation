@@ -3,6 +3,7 @@
 
 #include "missile.h"
 #include <iostream>
+#include <cmath>
 #include <vector>
 #include <fstream>
 
