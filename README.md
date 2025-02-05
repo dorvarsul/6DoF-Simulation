@@ -45,4 +45,5 @@ This will generate a 3D plot of the missile's trajectory.
     5.Add UI for Settings: Implement a graphical user interface (GUI) for setting missile parameters before launching.
 
 ### Image
-![image](https://github.com/user-attachments/assets/35ca6895-8aa2-455c-b3b2-da733b2eae7c)
+![image](https://github.com/user-attachments/assets/5ffa87f9-d2cc-4c77-92a3-067fd88a1645)
+
