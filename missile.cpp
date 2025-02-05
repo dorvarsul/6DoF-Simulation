@@ -2,7 +2,7 @@
 
 // Constructor
 Missile::Missile(const Eigen::Vector3d& initialPos, const Eigen::Vector3d& initialVel, double m, double fuel ,double thrust)
-: position(initialPos), velocity(initialVel), dryMass(m), momentOfInertia(1.0), angularVelocity(Eigen::Vector3d::Zero()),
+: position(initialPos), velocity(initialVel), angularVelocity(Eigen::Vector3d::Zero()), dryMass(m), momentOfInertia(1.0),
 fuelRemaining(fuel), thrust(thrust) {
    // Initialize acceleration and orientation
    acceleration = Eigen::Vector3d::Zero();

@@ -19,8 +19,8 @@ public:
     // Missile properties
     double dryMass; // Missile's weight
     double momentOfInertia; // Missile's resistance to rotation
-    double thrust; // Engine's thrust
     double fuelRemaining; // Remaining fuel
+    double thrust; // Engine's thrust
 
     // Constructor
     Missile(const Eigen::Vector3d& initialPos, const Eigen::Vector3d& initialVel, double m, double fuel, double thrust);
