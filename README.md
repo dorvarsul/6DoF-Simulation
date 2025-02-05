@@ -43,3 +43,6 @@ This will generate a 3D plot of the missile's trajectory.
     3.Optimization: Refactor code for better performance and memory management.
     4,Enhance Physics Model: Add more advanced physics, like wind effects or resistance, for more accurate simulations.
     5.Add UI for Settings: Implement a graphical user interface (GUI) for setting missile parameters before launching.
+
+### Image
+![image](https://github.com/user-attachments/assets/35ca6895-8aa2-455c-b3b2-da733b2eae7c)
