@@ -1,13 +1,23 @@
 #include "missile.h"
 
 // Constructor
-Missile::Missile(const Eigen::Vector3d& initialPos, const Eigen::Vector3d& initialVel, double m, double fuel ,double thrust)
-: position(initialPos), velocity(initialVel), angularVelocity(Eigen::Vector3d::Zero()), dryMass(m),
-fuelRemaining(fuel), thrust(thrust), momentOfInertia(1.0) {
-   // Initialize acceleration and orientation
-   acceleration = Eigen::Vector3d::Zero();
-   orientation = Eigen::Quaterniond(1,0,0,0); // Identity quaternion (no rotation) 
-}
+Missile::Missile(
+const Eigen::Vector3d& initialPos,
+const Eigen::Quaterniond& launchDirection,
+double m,
+double fuel,
+double burnRate,
+double thrust)
+:position(initialPos),
+velocity(Eigen::Vector3d::Zero()),
+acceleration(Eigen::Vector3d::Zero()),
+orientation(launchDirection),
+angularVelocity(Eigen::Vector3d::Zero()),
+dryMass(m),
+fuelRemaining(fuel),
+burnRate(burnRate),
+thrust(thrust),
+momentOfInertia(1.0) {}
 
 Missile::~Missile() {}
 
@@ -16,10 +26,9 @@ double Missile::getMass() {
 }
 
 void Missile::consumeFuel(double dt) {
-    const double fuelEfficiency = FUEL_EFFICIENCY; // Fuel consumption per unit thrust (kg/N - s)
 
     // Compute fuel usage
-    double fuelUsed = thrust * fuelEfficiency * dt;
+    double fuelUsed = burnRate * dt;
 
     // Reduce fuel
     fuelRemaining = std::max(0.0, fuelRemaining - fuelUsed);
@@ -39,10 +48,31 @@ double Missile::getZ() {
     return position.z();
 }
 
+void Missile::applyPhysics(double dt) {
+    Eigen::Vector3d totalForce = Eigen::Vector3d::Zero();
+    // Apply thrust along initial launch direction
+    if (thrust > 0) {
+        // Local forward direction of the missile
+        Eigen::Vector3d localForward(0,0,1);
+
+        // Convert to world space using quaternion rotation
+        Eigen::Vector3d thrustForce = thrust * (orientation * localForward);
+        totalForce += thrustForce;
+    }
+
+    // Apply gravity
+    Eigen::Vector3d gravityForce(0,0,-G * getMass());
+    totalForce += gravityForce;
+
+    // Compute linear acceleration
+    acceleration = totalForce / getMass();
+
+    // Update velocity and position
+    velocity += acceleration * dt;
+    position += velocity * dt;
+}
+
 // Returns true if missile is in air
 bool Missile::inAir() {
-    if (position.z() < 0) {
-        return false;
-    }
-    return true;
+    return getZ() >= 0 || fuelRemaining > 0;
 }

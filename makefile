@@ -6,7 +6,7 @@ CXXFLAGS = -Wall -std=c++17
 INCLUDES = -I/usr/include/eigen3
 
 # Source files
-SRC = simulation.cpp missile.cpp GuidedMissile.cpp BallisticMissile.cpp
+SRC = simulation.cpp missile.cpp UnguidedMissile.cpp
 OBJ = $(SRC:.cpp=.o)
 EXE = missile_sim
 

@@ -1,18 +1,36 @@
 #include "simulation.h"
 #include <iostream>
 
-void Simulation::runSimulation(double duration, double timeStep) {
+double Simulation::toRadians(double degrees) {
+    return degrees * M_PI / 180.0;
+}
+
+Eigen::Quaterniond Simulation::getOrientation(double pitchDeg, double yawDeg) {
+    double pitch = toRadians(pitchDeg);
+    double yaw = toRadians(yawDeg);
+
+    Eigen::Quaterniond qYaw(Eigen::AngleAxisd(yaw, Eigen::Vector3d(0, 0, 1))); // Yaw around Z
+    Eigen::Quaterniond qPitch(Eigen::AngleAxisd(pitch, Eigen::Vector3d(0, 1, 0))); // Pitch around Y
+
+    return qYaw * qPitch;  // Apply yaw first, then pitch
+}
+
+void Simulation::runSimulation() {
     int x, y, z;
-    int velocityMagnitude, pitch, yaw;
-    double mass, fuel, thrust;
-    int missileType;
+    int pitch, yaw;
+    double mass, fuel, burnRate, thrust;
+    double timeStep, duration;
 
     std::cout << "Welcome to the debug screen of the simulation!" << std::endl;
+
+    std::cout << "Choose time step of simulation:";
+    std::cin >> timeStep;
+
+    std::cout << "Choose duration of simulation(no of steps):";
+    std::cin >> duration;
+
     std::cout << "Enter initial position (x y z): ";
     std::cin >> x >> y >> z;
-
-    std::cout << "Enter initial velocity magnitude (m/s): ";
-    std::cin >> velocityMagnitude;
 
     std::cout << "Enter pitch angle (degrees): ";
     std::cin >> pitch;
@@ -26,40 +44,20 @@ void Simulation::runSimulation(double duration, double timeStep) {
     std::cout << "Enter fuel (kg): ";
     std::cin >> fuel;
 
+    std::cout << "Enter burn rate (kg/s):";
+    std::cin >> burnRate;
+
     std::cout << "Enter thrust (N): ";
     std::cin >> thrust;
 
-    std::cout << "Select missile type (1 = Ballistic, 2 = Guided): ";
-    std::cin >> missileType;
-
-    // Convert angles from degrees to radians
-    double pitchRad = pitch * M_PI / 180.0;
-    double yawRad = yaw * M_PI / 180.0;
-
-    // Calculate velocity components
-    double velX = velocityMagnitude * cos(pitchRad) * cos(yawRad);
-    double velY = velocityMagnitude * cos(pitchRad) * sin(yawRad);
-    double velZ = velocityMagnitude * sin(pitchRad);
 
     Eigen::Vector3d initialPos(x, y, z);
-    Eigen::Vector3d initialVel(velX, velY, velZ);
+    Eigen::Quaterniond launchDirection = getOrientation(pitch, yaw);
 
     // Initialize the correct missile type
     Missile* missile = nullptr;
 
-    if (missileType == 1) {
-        missile = new BallisticMissile(initialPos, initialVel, mass, fuel, thrust);
-    } else if (missileType == 2) {
-        double targetX, targetY, targetZ;
-        std::cout << "Enter target position (x y z): ";
-        std::cin >> targetX >> targetY >> targetZ;
-        Eigen::Vector3d targetPos(targetX, targetY, targetZ);
-
-        missile = new GuidedMissile(initialPos, initialVel, mass, fuel, thrust, targetPos);
-    } else {
-        std::cerr << "Invalid missile type selected! Exiting..." << std::endl;
-        return;
-    }
+    missile = new UnguidedMissile(initialPos, launchDirection, mass, fuel, burnRate, thrust);
 
     double elapsedTime = 0.0;
     std::ofstream file("trajectory.csv");
@@ -80,6 +78,6 @@ void Simulation::runSimulation(double duration, double timeStep) {
 }
 
 int main() {
-    Simulation::runSimulation(50, 0.05);
+    Simulation::runSimulation();
     return 0;
 }
