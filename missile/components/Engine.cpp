@@ -22,13 +22,16 @@ void Engine::shutdown() {
     std::cout << "Engine shutdown!" << std::endl;
 }
 
-void Engine::update(double dt, const Eigen::Quaterniond& missileOrientation) {
+void Engine::update(double dt, const Eigen::Quaterniond& missileOrientation, FuelTank* fuelTank) {
     if (!isRunning) {
         return;
     }
 
-    if (burnTime > 0) {
+    if (burnTime > 0 && fuelTank->hasFuel()) {
         burnTime -= dt;
+
+        double fuelConsumed = thrust / (specificImpulse * G_FORCE);
+        fuelTank->burnFuel(fuelConsumed);
 
         // Compute thrust direction in world space
         Eigen::Vector3d localThrust(0, 0, -thrust); // Local negative Z-axis

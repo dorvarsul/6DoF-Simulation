@@ -2,6 +2,9 @@
 #define ENGINE_H
 
 #include <eigen3/Eigen/Dense>
+#include "FuelTank.h"
+
+#define G_FORCE 9.81
 
 class Engine {
 private:
@@ -15,7 +18,7 @@ public:
     Engine(double thrust, double burnTime, double specificImpulse);
     void ignite(); // Activates engine
     void shutdown(); // Stops thrust
-    void update(double dt, const Eigen::Quaterniond& missileOrientation, void* fuelTank); // Adjusts thrust over time
+    void update(double dt, const Eigen::Quaterniond& missileOrientation, FuelTank* fuelTank); // Adjusts thrust over time
     bool isEngineRunning();
     Eigen::Vector3d getThrustVector();
 };

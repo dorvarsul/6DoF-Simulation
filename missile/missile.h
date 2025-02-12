@@ -22,6 +22,9 @@ private:
     GuidanceSystem* guidanceSystem; // Tracks target
     Warhead* warhead; // Payload
     */
+
+public:
+    Missile();
 };
 
 #endif  
