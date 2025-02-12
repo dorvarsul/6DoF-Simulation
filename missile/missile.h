@@ -5,6 +5,7 @@
 #include "components/FuelTank.h"
 #include <eigen3/Eigen/Dense>
 #include <eigen3/Eigen/Geometry>
+#include "inputObject.h"
 
 class Missile {
 private:
@@ -15,8 +16,8 @@ private:
     Eigen::Quaterniond orientation; // 3D Orientation
     double mass; // Total mass (including fuel)
 
-    Engine* engine; // Missile's engine
-    FuelTank* fuelTank; // Missile's fuel chamber
+    Engine engine; // Missile's engine
+    FuelTank fuelTank; // Missile's fuel chamber
     /*
     FlightSystem* flightSystem; // Controls aerodynamics and stability
     GuidanceSystem* guidanceSystem; // Tracks target
@@ -24,7 +25,7 @@ private:
     */
 
 public:
-    Missile();
+    Missile(Input parameters);
 };
 
 #endif  
