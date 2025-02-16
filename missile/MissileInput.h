@@ -1,12 +1,12 @@
-#ifndef INPUT_H
-#define INPUT_H
+#ifndef MISSILE_INPUT_H
+#define MISSILE_INPUT_H
 
 #include <eigen3/Eigen/Dense>
 #include <cmath>
 
 #define DEG2RAD(deg) ((deg) * M_PI / 180.0)
 
-class Input {
+class MissileInput {
 private:
     Eigen::Vector3d position;
     double angleXZ;
@@ -18,7 +18,7 @@ private:
     double fuelCapacity;
 
 public:
-    Input(
+    MissileInput(
         Eigen::Vector3d pos,
         double angleXZ,
         double angleXY,

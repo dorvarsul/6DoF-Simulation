@@ -21,6 +21,7 @@ public:
     void update(double dt, const Eigen::Quaterniond& missileOrientation, FuelTank* fuelTank); // Adjusts thrust over time
     bool isEngineRunning();
     Eigen::Vector3d getThrustVector();
+    double computeFuelConsumption(double dt);
 };
 
 #endif

@@ -1,7 +1,7 @@
-#include "inputObject.h"
+#include "MissileInput.h"
 
 // Constructor
-Input::Input(
+MissileInput::MissileInput(
     Eigen::Vector3d position,
     double angleXZ,
     double angleXY,
@@ -14,7 +14,7 @@ Input::Input(
 specificImpulse(specificImpulse), fuelCapacity(fuelCapacity) {}
 
 // Convert XY and XZ angles to quaternion
-Eigen::Quaterniond Input::getOrientation() {
+Eigen::Quaterniond MissileInput::getOrientation() {
     double theta = DEG2RAD(angleXZ);
     double phi = DEG2RAD(angleXY);
 
@@ -31,9 +31,9 @@ Eigen::Quaterniond Input::getOrientation() {
     return Eigen::Quaterniond::FromTwoVectors(reference, direction);
 }
 
-Eigen::Vector3d Input::getPosition() { return position; } // Return position
-double Input::getMass() { return mass; } // Returns mass
-double Input::getThrust() { return thrust; } // Returns thrust
-double Input::getBurnTime() { return burnTime; } // Returns burn time
-double Input::getSpecificImpulse() { return specificImpulse; } // Returns specific impulse
-double Input::getFuelCapacity() { return fuelCapacity; } // Returns fuel capacity
+Eigen::Vector3d MissileInput::getPosition() { return position; } // Return position
+double MissileInput::getMass() { return mass; } // Returns mass
+double MissileInput::getThrust() { return thrust; } // Returns thrust
+double MissileInput::getBurnTime() { return burnTime; } // Returns burn time
+double MissileInput::getSpecificImpulse() { return specificImpulse; } // Returns specific impulse
+double MissileInput::getFuelCapacity() { return fuelCapacity; } // Returns fuel capacity

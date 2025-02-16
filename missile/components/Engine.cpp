@@ -24,13 +24,14 @@ void Engine::shutdown() {
 
 void Engine::update(double dt, const Eigen::Quaterniond& missileOrientation, FuelTank* fuelTank) {
     if (!isRunning) {
+        thrustVector = Eigen::Vector3d::Zero();
         return;
     }
 
     if (burnTime > 0 && fuelTank->hasFuel()) {
         burnTime -= dt;
 
-        double fuelConsumed = thrust / (specificImpulse * G_FORCE);
+        double fuelConsumed = computeFuelConsumption(dt);
         fuelTank->burnFuel(fuelConsumed);
 
         // Compute thrust direction in world space
@@ -42,3 +43,11 @@ void Engine::update(double dt, const Eigen::Quaterniond& missileOrientation, Fue
 }
 
 Eigen::Vector3d Engine::getThrustVector() { return thrustVector; }
+
+double Engine::computeFuelConsumption(double dt) {
+    return (thrust / (specificImpulse * G_FORCE)) * dt;
+}
+
+bool Engine::isEngineRunning() {
+    return isRunning;
+}

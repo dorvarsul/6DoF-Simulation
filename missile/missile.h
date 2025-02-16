@@ -1,11 +1,12 @@
 #ifndef MISSILE_H
 #define MISSILE_H
 
+#include <iostream>
 #include "components/Engine.h"
 #include "components/FuelTank.h"
 #include <eigen3/Eigen/Dense>
 #include <eigen3/Eigen/Geometry>
-#include "inputObject.h"
+#include "MissileInput.h"
 
 class Missile {
 private:
@@ -25,7 +26,11 @@ private:
     */
 
 public:
-    Missile(Input parameters);
+    Missile(MissileInput parameters);
+    void launch();
+    void update(double dt);
+    
+    double getZ();
 };
 
 #endif  

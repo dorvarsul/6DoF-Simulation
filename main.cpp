@@ -1,4 +1,4 @@
-#include "missile.h"
+#include "missile/missile.h"
 #include <iostream>
 
 int main() {
@@ -31,9 +31,14 @@ int main() {
     std::cin >> fuelCapacity;
 
     Eigen::Vector3d initialPos(x,y,z);
-    Input input(initialPos, angleXZ, angleXY, mass, thrust, burnTime, specificImpulse, fuelCapacity);
+    MissileInput input(initialPos, angleXZ, angleXY, mass, thrust, burnTime, specificImpulse, fuelCapacity);
     Missile missile(input);
 
     std::cout << "Sucessfully created a missile!" << std::endl;
+
+    missile.launch();
+    while (missile.getZ() >= 0) {
+        missile.update(0.01);
+    }
     return 0;
 }
